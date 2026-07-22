@@ -1,0 +1,30 @@
+name: Run LaTeX
+
+on:
+  push:
+    branches: [main,master]
+  workflow_dispatch:
+
+jobs:
+  check-latex:
+    runs-on: ubuntu-latest
+    name: Runs LaTeX
+    steps:
+      - uses: actions/checkout@v2
+      
+      - name: Install Enough TexLive
+        run: sudo apt install texlive-base texlive-science texlive-latex-extra texlive-luatex latexmk texlive-publishers lmodern
+
+      - name: fonts
+        run: |
+          mkdir -p ~/.fonts/adobe-fonts/source-code-pro
+          git clone https://github.com/adobe-fonts/source-code-pro.git ~/.fonts/adobe-fonts/source-code-pro
+
+      - name: Run TexLive
+        run: latexmk -pdflua main
+
+      - uses: actions/upload-artifact@v7
+        with:
+          name: Project PDFs
+          path: ./main.pdf
+          retention-days: 14
