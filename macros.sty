@@ -1,0 +1,54 @@
+%\RequirePackage{savetrees}
+\RequirePackage{xspace}
+\RequirePackage{lmodern}
+\RequirePackage[utf8]{inputenc}
+\RequirePackage[T1]{fontenc}
+\RequirePackage[english]{babel}
+\RequirePackage{latexsym}
+\RequirePackage{amsmath,amsfonts,amssymb}
+\RequirePackage{nameref}
+%\RequirePackage{cleveref}
+%\RequirePackage{amsthm}
+\RequirePackage{dashbox}
+
+\RequirePackage{verbatim}
+\RequirePackage[inline]{enumitem}
+\RequirePackage[probability,adversary,sets,operators,primitives]{cryptocode}
+\RequirePackage{wrapfig}
+\RequirePackage{booktabs}
+\RequirePackage{pdfpages}
+\RequirePackage{multicol}
+\RequirePackage{catchfilebetweentags}
+% \RequirePackage{lipsum}
+\RequirePackage{url}
+\RequirePackage{lscape}
+\RequirePackage{subcaption}
+\RequirePackage{placeins}
+\RequirePackage{rotating}
+\RequirePackage{thm-restate}
+\RequirePackage{todonotes}
+
+\newcommand{\vcaption}[1]{\vspace{-1ex}\caption{#1}\vspace{-1ex}}
+\newcommand{\maxres}{L}
+\newcommand{\psk}{\O{psk}}
+\newcommand{\afterdeadline}[1]{}
+\setuptodonotes{shadow}
+\newcommand{\adl}[1]{} %{\todo[color=lightgray]{ADL: #1}}
+\newcommand{\cb}[1]{} %{\todo[color=lime]{CB: #1}}
+\newcommand{\chris}[1]{} %{\todo[color=lime]{CB: #1}}
+\newcommand{\kk}[1]{} %{\todo[color=green!30]{KK: #1}}
+\newcommand{\cf}[1]{} %{\todo[color=blue!30]{CF: #1}}
+\newcommand{\CF}[1]{} %{\todo[color=blue!30,bordercolor=red]{CF: #1}}
+\newcommand{\mk}[1]{\todo[color=red!30]{MK: #1}}
+\newcommand{\MK}[1]{\todo[color=red!30,bordercolor=red]{MK: #1}}
+\newcommand{\mklight}[1]{}
+\renewcommand{\vec}[1]{\ensuremath{\mathbf{#1}}}
+\renewcommand\pcthen{:}
+
+\newcommand\pcignore{\highlightkeyword{ignore}}
+\newcommand\pcaccept{\highlightkeyword{accept}}
+\newcommand\pcreject{\highlightkeyword{reject}}
+
+
+\newcommand{\game}{\mathsf{Game}}
+\newcommand{\prot}{\mathsf{Prot}}

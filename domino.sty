@@ -1,0 +1,54 @@
+\NeedsTeXFormat{LaTeX2e}
+\ProvidesPackage{domino}[2026/05/12 Domino Layouting Stuff]
+
+\RequirePackage{listings}
+
+\lstdefinelanguage{Domino}{
+  morekeywords={
+    package,composition,params,
+    state,oracle,if,else,return,
+    package,const,instance,compose,
+    reduction,equivalence,map,invariant,
+    randomness,lemmas,assumption,theorem,
+    gamehops,assumptions,propositions,import,
+    oracles,assert,invoke,Unwrap
+  },
+  morekeywords=[2]{fn,Table,Bool,Integer,Some,None,Bits,Maybe},
+  sensitive=true,
+  morecomment=[s]{/*}{*/},
+  morestring=[b]",
+}
+\lstdefinelanguage{SMT2}{
+  %keywordsprefix={Bits_},
+  morekeywords={let,define-fun,define-state-relation,and,forall},
+  morekeywords=[2]{Array,Int,Bool,SampleId,Maybe},
+  sensitive=true,
+  alsoletter={-},
+  morestring=[b]",
+}
+\lstdefinelanguage{EasyCrypt}{
+  morekeywords={module,var,proc,return,if,then,else,type},
+  morekeywords=[2]{bool},
+  sensitive=true,
+  morestring=[b]",
+}
+\providecommand\longsample[1]{\,\xlongleftarrow{\hspace{-.75em}#1\hspace{-.75em}}\mathrel{\mkern-2.0mu}\pc@smalldollar\,}
+\providecommand\namedsample[1]{\stackrel{\n{#1}}{\sample}}
+
+\RequirePackage{tikz}
+\tikzstyle{package} = [inner sep=1pt,align=center,rounded corners,draw,minimum width=2cm,minimum height=1cm,font=\small]
+\tikzstyle{onarrow} = [inner sep=1pt,font=\scriptsize,anchor=west,at start,align=left,fill=white]
+\tikzset{
+  hyperlink node/.style={
+    alias=sourcenode,
+    append after command={
+      let     \p1 = (sourcenode.north west),
+      \p2=(sourcenode.south east),
+      \n1={\x2-\x1},
+      \n2={\y1-\y2} in
+      node [inner sep=0pt, outer sep=0pt,anchor=north west,at=(\p1)] {\href{https://dainty-froyo-12acd5.netlify.app/#1.ssp.txt}{\XeTeXLinkBox{\phantom{\rule{\n1}{\n2}}}}}
+    }
+  }
+}
+
+\usetikzlibrary{fit,patterns}
