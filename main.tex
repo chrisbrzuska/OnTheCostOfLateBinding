@@ -92,24 +92,6 @@ def}}}{=}}}
 %  Aalto University, Finland \and Chalmers University of Technology and University of Gothenburg, Sweden \and Free spirit
 %}
 
-\let\oldprocedure\procedure
-\renewcommand\procedure[2][]{\oldprocedure[#1,codesize=\small{}]{\small#2}}
-
-\definecolor{kxpink}{RGB}{211,77,122} % D34D7A
-\newcommand\pink{\textcolor{kxpink}{pink}}
-\definecolor{kxblue}{RGB}{51, 171, 189} % #33abbd
-\newcommand\blue{\textcolor{kxblue}{blue}}
-\newcommand\gray{\textcolor{gray}{gray}}
-
-\newcommand{\pcas}{~\highlightkeyword{as}}
-\newcommand\lit[1]{\ensuremath{\mathtt{#1}}}
-\renewcommand\O[1]{\ensuremath{\mathsf{#1}}}
-%\newcommand{\M}[1]{\ensuremath{\text{\texttt{#1}}}}
-%\newcommand{\n}[1]{\ensuremath{\mathit{#1}}}
-
-% Math hyphen
-\mathchardef\mathhyphen ="2D
-
 
 
 \begin{document}
@@ -124,7 +106,7 @@ def}}}{=}}}
 
 
 
-\bibliography{cryptobib/abbrev3,cryptobib/crypto,local,misc}{}
+\bibliography{cryptobib/abbrev3,cryptobib/crypto,local}{}
 \bibliographystyle{abbrv}
 
 \end{document}
