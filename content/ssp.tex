@@ -1,11 +1,11 @@
 In this section, we describe SSPs as well as their formalization in Domino.
 
-\subsection{Decision Games without post-processing.} All security properties are described as distinguishing games where the adversary is the ``main routine''. This style is aligned with the \emph{Joy of Cryptography}~(JOC~\cite{JOC}) which considers game-hopping more natural when reducing to decision games, e.g., replacing real signature verification by table-based verification. Additionally, it matches frameworks such as Universal Composability (UC~\cite{FOCS:Canetti01}) and Constructive Cryptography (CC~\cite{FC:Maurer10}). Using decision games is without loss of generality since all search games can be encoded generically as decision games, 
+\subsection{Decision Games without post-processing} All security properties are described as distinguishing games where the adversary is the ``main routine''. This style is aligned with the \emph{Joy of Cryptography}~(JOC~\cite{JOC}) which considers game-hopping more natural when reducing to decision games, e.g., replacing real signature verification by table-based verification. Additionally, it matches frameworks such as Universal Composability (UC~\cite{FOCS:Canetti01}) and Constructive Cryptography (CC~\cite{FC:Maurer10}). Using decision games is without loss of generality since all search games can be encoded generically as decision games, 
 %If need be, search games can be encoded as distinguishing games either naturally (as in the case of signatures) or generically (but less naturally)
 % by adding a $\mathsf{Win}$ oracle which returns the result of evaluating the winning condition in the real game and always $0$ in the ideal game, 
 see~\cite[Appendix B]{cryptocompanion} for more details. In turn, making the adversary the main routine means that we do not allow post-processing or \emph{penalizing} the adversary. Often, restrictions on the adversary can be encoded by blocking disallowed oracle queries, as advocated by Rogaway and Zhang~\cite{C:RogZha18} and Brzuska, Cremers, Jacobsen, Stabila and Warinschi~\cite{BCJSW25}.
 
-\subsection{Reductions.} \label{para:reductions} SSPs only model \emph{straightline} reductions, i.e., reductions which only run a single copy of the adversary without rewinding and without using the code of the adversary (or choosing the randomness of the adversary). Moreover, SSPs also follow the JOC style of treating reductions as a piece of code which translates the adversary's queries and does not post-process the adversary's final output. 
+\subsection{Reductions} \label{para:reductions} SSPs only model \emph{straightline} reductions, i.e., reductions which only run a single copy of the adversary without rewinding and without using the code of the adversary (or choosing the randomness of the adversary). Moreover, SSPs also follow the JOC style of treating reductions as a piece of code which translates the adversary's queries and does not post-process the adversary's final output. 
 
 Concretely, if we show that an adversary $\adv$ has negligible advantage when playing against a game, say key exchange game $\mathsf{KX}^b$, which exposes an $\O{EXECUTE}$ oracle, via a reduction to a pseudorandom function (PRF) game $\mathsf{PRF}^b$ which exposes an $\O{EVAL}$ oracle,
 the reduction is a query translater $\stackrel{\mathsf{EXECUTE}}{\rightarrow}\rdv\stackrel{\mathsf{EVAL}}{\rightarrow}$ which receives $\O{EXECUTE}$ queries and turns them into $\O{EVAL}$ queries. If we can show that the reduction emulates the games $\mathsf{KX}^b$ faithfully, i.e., the following games provide equal (distributions) outputs
@@ -31,7 +31,7 @@ then we get equality of advantages of $\adv$ against $\M{KX}^b$ and $\bdv:=\adv\
 \end{align*}
 where the 2nd equality uses associativity of algorithm composition, i.e., that $\rdv$ can be composed with $\mathsf{PRF}^b$ in order to get to $\mathsf{KX}^b$ or $\rdv$ can be composed with $\adv$ to get adversary $\bdv$. Proving Eq.~\ref{eq:eq1} and Eq.~\ref{eq:eq2} is the bottleneck in machine-verifying proofs.
 
-\subsection{Induction Proofs for Program Equality.}\label{sec:induction}\label{sec:obligations}
+\subsection{Induction Proofs for Program Equality}\label{sec:induction}\label{sec:obligations}
 Domino formalizes that two games $\M{G}^0$ and $\M{G}^1$ behave equally on all sequences of oracle queries is via a simple induction argument. For now, let us focus on \emph{deterministic} games. The induction proceeds by defining a relation $R$ between states and then, one proves the following.
 \begin{description}
 \item[Induction Start.] $\mathsf{state}^{\mathsf{init}}_0\stackrel{R}{\sim} \mathsf{state}^{\mathsf{init}}_1$ holds on the initial states.
@@ -80,3 +80,6 @@ and then we define a randomness relation
 																				 &\mathsf{randomness\mathhyphen relation}(\n{id\_left},\n{id\_right})=1\\
  \stackrel{\text{def}}{\Leftrightarrow}\;&(\n{id\_left}=\n{smpl\_nc}\,\wedge\,\n{id\_right}=\n{smpl\_nc'}).
 \end{align*}
+
+\subsection{State-Separating Proofs}
+{\color{blue} Discuss modular games, cuts in graphs etc.? Or shall we cover this on a concrete example later?}
