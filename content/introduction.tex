@@ -13,7 +13,7 @@ However, instead of binding the KEM shared-key to the KEM ciphertext and public-
 We modify the {\color{blue}which} implementation to adopt our proposal and provide extensive testing to illustrate that, as expected, the computational cost of early binding is negligible. 
 
 As a second contribution, we set out to explain the BDEFKK claim that late binding complicates the key schedule analysis by analyzing two key schedule variations of a toy protocol which supports both a KEM and a PSK. Following BDEFKK, our analysis relies on the state-separating proofs framework (SSP~\cite{AC:BDFKK18}). We
-formalize both of our analyses in Domino, a recently published verification tool for reduction proofs in cryptography~\cite{X}.
+formalize both of our analyses in Domino, a recently published verification tool for reduction proofs in cryptography~\cite{EPRINT:BERW26}.
 
 We conclude with a discussion on why the analysis of the key schedule with early binding is easily extendible to, e.g., including further keys, while extending the analysis of key schedule with late binding is more involved.
 
