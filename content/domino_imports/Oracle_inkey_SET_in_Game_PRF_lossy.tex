@@ -1,0 +1,10 @@
+\procedure{$\O{SET}\left(\begin{array}{c}\n{handle}, \n{k}, \n{hon}\end{array}\right)$}{
+\pcif \n{isideal}_\n{uniq} \pcthen\\
+\pcind\pcassert \left(\begin{array}{c}\phantom{ \vee }\n{Log}[\n{k}] = \bot\pclb \vee \n{Log}[\n{k}] = \n{handle}\end{array}\right) \\
+\pcif \n{K}[\n{handle}] = \bot \pcthen\\
+\pcind\pcif \left(\n{isideal}_\n{ind} \wedge \n{hon}\right) \pcthen\\
+\pcind\pcind \n{k} \stackrel{1}{\sample} \bin^{\n{n}}\\
+\pcind \n{HON}\left[\n{handle}\right] \gets \n{hon}\\
+\pcind \n{K}\left[\n{handle}\right] \gets \n{k}\\
+\pcind \n{Log}\left[\n{k}\right] \gets \n{handle}\\
+}
