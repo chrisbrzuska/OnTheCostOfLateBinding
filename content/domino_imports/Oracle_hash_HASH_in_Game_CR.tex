@@ -1,0 +1,11 @@
+\procedure{$\O{HASH}(\n{x}, \n{y})$}{
+ \n{in} \gets \left(\begin{array}{c}\n{x}, \n{y}\end{array}\right)\\
+\pcif (\n{H}[\n{in}] \neq \O{none}\left(\bin^{\n{n}}\right)) \pcthen\\
+\pcind \pcreturn \O{unwrap}\left(\n{H}[\n{in}]\right)\\
+ \n{d} \gets \O{\n{f}}(\n{x}, \n{y})\\
+\pcif \left(\begin{array}{c}\phantom{ \wedge }\n{b}\pclb \wedge (\n{Log}[\n{d}] \neq \O{none}\left(\O{Tuple[..]}\right))\end{array}\right) \pcthen\\
+\pcind \pcabort\\
+ \n{H}\left[\n{in}\right] \gets \O{some}\left(\n{d}\right)\\
+ \n{Log}\left[\n{d}\right] \gets \O{some}\left(\n{in}\right)\\
+ \pcreturn \n{d}\\
+}

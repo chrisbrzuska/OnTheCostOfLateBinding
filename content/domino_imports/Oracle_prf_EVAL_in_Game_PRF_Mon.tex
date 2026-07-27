@@ -1,0 +1,9 @@
+\procedure{$\O{EVAL}(\n{handle}, \n{input})$}{
+\pcif \neg \n{b} \pcthen\\
+\pcind \n{prf}_\n{key} \gets \O{unwrap}\left(\n{KEY}[\n{handle}]\right)\\
+\pcind \pcreturn \O{\n{prf}}(\n{prf}_\n{key}, \n{input})\\
+\pcif \n{OUT}[\n{handle}] = \O{none}\left(\bin^{\n{n}}\right) \pcthen\\
+\pcind \n{out} \stackrel{prf\_out}{\sample} \bin^{\n{n}}\\
+\pcind \n{OUT}\left[\n{handle}\right] \gets \O{some}\left(\n{out}\right)\\
+ \pcreturn \O{unwrap}\left(\n{OUT}[\n{handle}]\right)\\
+}

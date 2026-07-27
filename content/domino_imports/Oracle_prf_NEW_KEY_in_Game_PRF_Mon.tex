@@ -1,0 +1,5 @@
+\procedure{$\O{NEW\_KEY}(\n{handle})$}{
+\pcif \n{KEY}[\n{handle}] = \O{none}\left(\bin^{\n{n}}\right) \pcthen\\
+\pcind \n{prf}_\n{key} \stackrel{prf\_key}{\sample} \bin^{\n{n}}\\
+\pcind \n{KEY}\left[\n{handle}\right] \gets \O{some}\left(\n{prf}_\n{key}\right)\\
+}
