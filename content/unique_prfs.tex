@@ -3,7 +3,9 @@ The hash-based key derivation function (HKDF) used by TLS 1.3 is an essential bu
 \begin{figure}
  \centering
  \input{content/domino_imports/CompositionGraph_Game_PRF.tex}
- \caption{Packages of the Unique PRF game.}
+ \caption{Unique PRF game composition with parameter $b\in\bin$. $\M{input\_key}$ is an instance of $\M{key}^{bind,buniq}$
+with $bind=0$ and $buniq=1$, and $\M{input\_key}$ is an instance of $\M{key}^{bind,buniq}$
+with $bind=buniq=b$. See Fig.~\ref{fig:PRF_pkg} for package code.}
  \label{fig:PRF_graph}
 \end{figure}
 
@@ -11,9 +13,24 @@ The Unique PRF package is connected to two keys, the input and the output key (s
 
 \begin{figure}
  \centering
- \input{content/domino_imports/Package_prf_in_Game_PRF.tex}
- \input{content/domino_imports/Package_inkey_in_Game_PRF_lossy.tex}
- \caption{Definition of the Unique PRF.}
+\begin{pchstack}
+\begin{pcvstack}\underline{\underline{\M{Unique PRF}}}\\
+\input{content/domino_imports/Oracle_prf_EVAL_in_Game_PRF.tex}\pcvspace
+\end{pcvstack}\pchspace
+\begin{pcvstack}\underline{\underline{\M{inkey} \& \M{outkey}}}\\
+\begin{pchstack}
+\input{content/domino_imports/Oracle_inkey_SET_in_Game_PRF_lossy.tex}\pchspace
+\begin{pcvstack}
+\input{content/domino_imports/Oracle_inkey_GET_in_Game_PRF_lossy.tex}\pcvspace
+\input{content/domino_imports/Oracle_inkey_HON_in_Game_PRF_lossy.tex}
+\end{pcvstack}
+\end{pchstack}
+\end{pcvstack}
+\end{pchstack}
+
+
+
+ \caption{Package code of \M{Unique PRF} and \M{key}. Both \M{inkey} and \M{outkey} are instances of \M{key} with separate state.}
  \label{fig:PRF_pkg}
 \end{figure}
 
@@ -21,12 +38,14 @@ A Unique PRF is secure if it is indistinguishable from the PRF in an ideal envir
 
 \begin{definition}[Unique PRF]
 \label{advantage:theorem:Main:PRF_real:PRF_ideal}
-For all adversaries $\adv$, we define the Unique PRF advantage as\[\mathsf{Adv}(\adv;Unique\_PRF\_real,Unique\_PRF\_ideal):=\abs{\begin{array}{l}\phantom{-}\prob{1 = \adv\rightarrow Unique\_PRF\_real}\\-\prob{1 = \adv\rightarrow Unique\_PRF\_ideal }\end{array}}.
+Let $Unique\_PRF\_real:=Unique\_PRF^0$ and $Unique\_PRF\_ideal:=Unique\_PRF^1$.
+A Unique PRF is secure if for all PPT adversaries $\adv$, the advantage $\mathsf{Adv}(\adv;Unique\_PRF\_real,Unique\_PRF\_ideal):=$
+\[\abs{\begin{array}{l}\phantom{-}\prob{1 = \adv\rightarrow Unique\_PRF\_real}\\-\prob{1 = \adv\rightarrow Unique\_PRF\_ideal }\end{array}}.
 \]
-A Unique PRF is secure if, for every adversary, the above advantage is negligible.
+is negligible in the security parameter.
 \end{definition}
 
-\subsection{The Assumptions}
+\subsection{Assumptions}
 
 We show the security of the Unique PRF based on two assumptions: A standard PRF assumption of pseudorandomness of the output, as well as a collision resistance on the outputs. We will start with the PRF assumption. The PRF package has two interfaces: NEW\_KEY generates a key for a given handle if no key exists for this handle yet (see Figure~\ref{fig:PRF_mon_pkg}). EVAL, in the real world, evaluates the PRF on the handle and its corresponding key. In the ideal world, however, EVAL randomly samples outputs for the respective handle.
 
@@ -68,6 +87,5 @@ This allows us now to state our main theorem for this section:
 We prove that for all adversaries $\adv$, there are reductions $\rdv_{1}$, $\rdv_{2}$ such that \begin{align*}\mathsf{Adv}(\adv, PRF\_real, PRF\_ideal)) \leq &\mathsf{Adv}(\adv\rightarrow\rdv_{1},\mathit{CR\_ideal},\mathit{CR\_real}) \\+ &\mathsf{Adv}(\adv\rightarrow\rdv_{2},\mathit{PRF\_mon\_ideal},\mathit{PRF\_mon\_real}).\end{align*} %where reduction $\rdv_1$ is defined in Fig.~\ref{figure:reduction:CR:CR_Reduction_real:CR_Reduction_ideal}, reduction $\rdv_2$ is defined in Fig.~\ref{figure:reduction:PRF:PRF_Reduction_real:PRF_Reduction_ideal}
 \end{theorem}
 
-\subsection{The Proof}
-
+\paragraph{Proof.} {\color{blue} TODO.}
 

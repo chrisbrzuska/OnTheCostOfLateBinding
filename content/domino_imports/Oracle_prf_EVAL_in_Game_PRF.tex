@@ -1,6 +1,6 @@
 \procedure{$\O{EVAL}(\n{handle})$}{
- \n{prf}_\n{key} \stackrel{\mathsf{\tiny invoke}}{\gets} \O{GET}(\n{handle}) \pccomment{Pkg: input\_key}\\
- \n{hon} \stackrel{\mathsf{\tiny invoke}}{\gets} \O{HON}(\n{handle}) \pccomment{Pkg: input\_key}\\
+ \n{prf}\_\n{key} \stackrel{\mathsf{\tiny invoke}}{\gets} \O{GET}(\n{handle})\\% \pccomment{Pkg: input\_key}\\
+ \n{hon} \stackrel{\mathsf{\tiny invoke}}{\gets} \O{HON}(\n{handle})\\% \pccomment{Pkg: input\_key}\\
  \n{out} \gets \O{\n{prf}}(\n{prf}_\n{key}, \n{handle})\\
-\O{SET}(\n{handle}, \n{out}, \n{hon}) \pccomment{Pkg: output\_key} \\
+\O{SET}(\n{handle}, \n{out}, \n{hon})% \pccomment{Pkg: output\_key} \\
 }
