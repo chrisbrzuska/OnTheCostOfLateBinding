@@ -1,0 +1,9 @@
+\begin{tikzpicture}
+\node[anchor=south west,align=center,package,minimum height=2cm,fill=white] (node0) at (7,3) {\M{input\_key}};\node[anchor=south west,align=center,package,minimum height=2.5cm,fill=white] (node1) at (3.5,1.5) {\M{prf}};\node[anchor=south west,align=center,package,minimum height=2cm,fill=white] (node2) at (7,0.5) {\M{output\_key}};\draw[-latex,rounded corners]
+    (5.5,3.5) -- node[onarrow] {\O{GET}\\\O{HON}} (7,3.5);
+\draw[-latex,rounded corners]
+    (5.5,2) -- node[onarrow] {\O{SET}} (7,2);
+\draw[-latex,rounded corners] (2,4.5) -- node[onarrow] {\O{SET}} (7,4.5);
+\draw[-latex,rounded corners] (2,2.5) -- node[onarrow] {\O{EVAL}} (3.5,2.5);
+\draw[-latex,rounded corners] (2,1) -- node[onarrow] {\O{HON}\\\O{GET}} (7,1);
+\end{tikzpicture}

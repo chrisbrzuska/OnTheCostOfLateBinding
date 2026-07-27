@@ -1,0 +1,24 @@
+The hash-based key derivation function (HKDF) used by TLS 1.3 is an essential building block for achieving the binding property of the protocol. Indeed, it is not sufficient to model the HKDF as a pseudorandom function (PRF), as a PRF is not necessarily collision-resistant for a fixed key. Therefore, we model the HKDF as a Unique PRF, which both has a pseudorandomness property as well as a collision resistance property.
+
+\begin{figure}
+ \centering
+ \input{content/domino_imports/CompositionGraph_Game_PRF.tex}
+ \caption{Packages of the Unique PRF game.}
+\end{figure}
+
+\begin{definition}[PRF]
+\label{advantage:assumption:PRF:PRF_mon_real:PRF_mon_ideal}
+For all adversaries $\adv$, we define the PRF advantage as\[\mathsf{Adv}(\adv;PRF\_mon\_real,PRF\_mon\_ideal):=\abs{\begin{array}{l}\phantom{-}\prob{1 = \adv\rightarrow PRF\_mon\_real}\\-\prob{1 = \adv\rightarrow PRF\_mon\_ideal}\end{array}},
+                      \]where PRF\_mon\_real and PRF\_mon\_ideal are defined in Sec.~\ref{section:game:PRF_mon_real} and Sec.~\ref{section:game:PRF_mon_ideal}, respectively.\end{definition}
+\begin{definition}[CR]
+\label{advantage:assumption:CR:CR_real:CR_ideal}
+For all adversaries $\adv$, we define the CR advantage as\[\mathsf{Adv}(\adv;CR\_real,CR\_ideal):=\abs{\begin{array}{l}\phantom{-}\prob{1 = \adv\rightarrow CR\_real}\\-\prob{1 = \adv\rightarrow CR\_ideal}\end{array}},
+                      \]where CR\_real and CR\_ideal are defined in Sec.~\ref{section:game:CR_real} and Sec.~\ref{section:game:CR_ideal}, respectively.\end{definition}
+
+\begin{definition}[Unique PRF]
+\label{advantage:theorem:Main:PRF_real:PRF_ideal}
+For all adversaries $\adv$, we define the Main advantage as\[\mathsf{Adv}(\adv;PRF\_real,PRF\_ideal):=\abs{\begin{array}{l}\phantom{-}\prob{1 = \adv\rightarrow PRF\_real}\\-\prob{1 = \adv\rightarrow PRF\_ideal }\end{array}},
+                      \]where PRF\_real and PRF\_ideal are defined in Sec.~\ref{section:game:PRF_real} and Sec.~\ref{section:game:PRF_ideal}, respectively.\end{definition}
+
+
+
