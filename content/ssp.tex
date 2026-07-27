@@ -1,0 +1,82 @@
+In this section, we describe SSPs as well as their formalization in Domino.
+
+\subsection{Decision Games without post-processing.} All security properties are described as distinguishing games where the adversary is the ``main routine''. This style is aligned with the \emph{Joy of Cryptography}~(JOC~\cite{JOC}) which considers game-hopping more natural when reducing to decision games, e.g., replacing real signature verification by table-based verification. Additionally, it matches frameworks such as Universal Composability (UC~\cite{FOCS:Canetti01}) and Constructive Cryptography (CC~\cite{FC:Maurer10}). Using decision games is without loss of generality since all search games can be encoded generically as decision games, 
+%If need be, search games can be encoded as distinguishing games either naturally (as in the case of signatures) or generically (but less naturally)
+% by adding a $\mathsf{Win}$ oracle which returns the result of evaluating the winning condition in the real game and always $0$ in the ideal game, 
+see~\cite[Appendix B]{cryptocompanion} for more details. In turn, making the adversary the main routine means that we do not allow post-processing or \emph{penalizing} the adversary. Often, restrictions on the adversary can be encoded by blocking disallowed oracle queries, as advocated by Rogaway and Zhang~\cite{C:RogZha18} and Brzuska, Cremers, Jacobsen, Stabila and Warinschi~\cite{BCJSW25}.
+
+\subsection{Reductions.} \label{para:reductions} SSPs only model \emph{straightline} reductions, i.e., reductions which only run a single copy of the adversary without rewinding and without using the code of the adversary (or choosing the randomness of the adversary). Moreover, SSPs also follow the JOC style of treating reductions as a piece of code which translates the adversary's queries and does not post-process the adversary's final output. 
+
+Concretely, if we show that an adversary $\adv$ has negligible advantage when playing against a game, say key exchange game $\mathsf{KX}^b$, which exposes an $\O{EXECUTE}$ oracle, via a reduction to a pseudorandom function (PRF) game $\mathsf{PRF}^b$ which exposes an $\O{EVAL}$ oracle,
+the reduction is a query translater $\stackrel{\mathsf{EXECUTE}}{\rightarrow}\rdv\stackrel{\mathsf{EVAL}}{\rightarrow}$ which receives $\O{EXECUTE}$ queries and turns them into $\O{EVAL}$ queries. If we can show that the reduction emulates the games $\mathsf{KX}^b$ faithfully, i.e., the following games provide equal (distributions) outputs
+\begin{align}
+\mathsf{KX}^0&\;\;\equiv\;\;%\stackrel{\mathsf{EXECUTE}}{\rightarrow}
+\rdv\stackrel{\mathsf{EVAL}}{\rightarrow}\mathsf{PRF}^0\text{ and }\label{eq:eq1}\\
+\mathsf{KX}^1&\;\;\equiv\;\;%\stackrel{\mathsf{EXECUTE}}{\rightarrow}
+\rdv\stackrel{\mathsf{EVAL}}{\rightarrow}\mathsf{PRF}^1\label{eq:eq2},
+\end{align}
+then we get equality of advantages of $\adv$ against $\M{KX}^b$ and $\bdv:=\adv\rightarrow\rdv$ against $\M{PRF}^b$ as follows:
+\begin{align*}
+ &\abs{\prob{1=\adv\stackrel{\mathsf{EXECUTE}}{\rightarrow}\mathsf{KX}^0}
+\;\;\;\;\;\;\;\;\;\;\;\;\;\;\;\;\;\;
+     -\prob{1=\adv\stackrel{\mathsf{EXECUTE}}{\rightarrow}\mathsf{KX}^0}}\\
+\stackrel{Eq.\ref{eq:eq1},\ref{eq:eq2}}{=}
+ &\abs{\prob{1=\adv\stackrel{\mathsf{EXECUTE}}{\rightarrow}\left(\rdv\stackrel{\mathsf{EVAL}}{\rightarrow}\mathsf{PRF}^0\right)}
+     -\prob{1=\adv\stackrel{\mathsf{EXECUTE}}{\rightarrow}\left(\rdv\stackrel{\mathsf{EVAL}}{\rightarrow}\mathsf{PRF}^1\right)}}\\
+=&\abs{\prob{1=\left(\adv\stackrel{\mathsf{EXECUTE}}{\rightarrow}\rdv\right)\stackrel{\mathsf{EVAL}}{\rightarrow}\mathsf{PRF}^0}
+     -\prob{1=\left(\adv\stackrel{\mathsf{EXECUTE}}{\rightarrow}\rdv\right)\stackrel{\mathsf{EVAL}}{\rightarrow}\mathsf{PRF}^1}}\\
+=&\abs{\prob{1=\bdv\stackrel{\mathsf{EVAL}}{\rightarrow}\mathsf{PRF}^0}
+\;\;\;\;\;\;\;\;\;\;\;\;\;\;\;\;\;\;\;\;\;\;
+     -\prob{1=\bdv\stackrel{\mathsf{EVAL}}{\rightarrow}\mathsf{PRF}^1}},
+\end{align*}
+where the 2nd equality uses associativity of algorithm composition, i.e., that $\rdv$ can be composed with $\mathsf{PRF}^b$ in order to get to $\mathsf{KX}^b$ or $\rdv$ can be composed with $\adv$ to get adversary $\bdv$. Proving Eq.~\ref{eq:eq1} and Eq.~\ref{eq:eq2} is the bottleneck in machine-verifying proofs.
+
+\subsection{Induction Proofs for Program Equality.}\label{sec:induction}\label{sec:obligations}
+Domino formalizes that two games $\M{G}^0$ and $\M{G}^1$ behave equally on all sequences of oracle queries is via a simple induction argument. For now, let us focus on \emph{deterministic} games. The induction proceeds by defining a relation $R$ between states and then, one proves the following.
+\begin{description}
+\item[Induction Start.] $\mathsf{state}^{\mathsf{init}}_0\stackrel{R}{\sim} \mathsf{state}^{\mathsf{init}}_1$ holds on the initial states.
+\item[Induction Step: Same Outputs.] If $\mathsf{state}^{\mathsf{old}}_0\stackrel{R}{\sim} \mathsf{state}^{\mathsf{old}}_1$, then it holds that for 
+ every oracle $\mathsf{O}$ and input $\n{x}$, the output $y_0$ of oracle $\mathsf{O}$ of $\M{G}^0$ run on input $x$ and state $\mathsf{state}^{\mathsf{old}}_0$
+is equal to the output $y_1$ of oracle $\mathsf{O}$ of $\M{G}^1$ run on input $x$ and state $\mathsf{state}^{\mathsf{old}}_1$.
+\item[Induction Step: Invariant.] If $\mathsf{state}^{\mathsf{old}}_0\stackrel{R}{\sim} \mathsf{state}^{\mathsf{old}}_1$, then it holds that for 
+ every oracle $\mathsf{O}$ and input $\n{x}$, the new state $\mathsf{state}^{\mathsf{new}}_0$ of $\M{G}^0$ when running oracle $\mathsf{O}$ of $\M{G}^0$ on input $x$ and state $\mathsf{state}^{\mathsf{old}}_0$ is in relation $R$ to the new state $\mathsf{state}^{\mathsf{new}}_1$ of $\M{G}^1$ when running oracle $\mathsf{O}$ of $\M{G}^1$ on input $x$, i.e., $\mathsf{state}^{\mathsf{new}}_0\stackrel{R}{\sim} \mathsf{state}^{\mathsf{new}}_1$.
+\end{description}
+If all of the above conditions hold, then $\M{G}^0$ and $\M{G}^1$ behave equally on all sequences of oracle queries. This induction style argument for code equivalence was first observed by Hoare and is thus commonly referred to as \emph{Hoare Logic}.
+
+\paragraph{Symbolic Randomness.} One difficulty in proving equivalent behaviour of two games on any sequence of queries is the use of \emph{randomness}, so that the statement that two randomized games behave in the same way is a statement about \emph{distributions}. Here, Domino uses the following simple reasoning: If the two games use the \emph{same} randomness, then they provide the same input-output behaviour. However, two games might read from their random ``tape'' in different orders, so the user specifies which random strings in one game map to which random strings in the 2nd game. Thus, Domino introduces sampling identifiers for each sampling operation and the user specifies an (injective) relation between the identifiers.
+
+As an example, consider a game $\M{G}^0$ with one oracle $\O{Sample}$ which samples $\n{nc}\sample\bin^\lambda$ and returns $\n{nc}$ and a 2nd game $\M{G}^1$ with one oracle $\O{Sample}$ which samples $\n{nc}\sample\bin^\lambda$, and $\n{nc}'\sample\bin^\lambda$ and then returns $\n{nc}'$. If we want to argue that oracle $\O{Sample}$ of $\M{G}^0$ and oracle $\O{Sample}$ of $\M{G}^1$ produce the same distribution, we reason about this by proving that they return the same output when using the same randomness for sampling $\n{nc}$ in $\M{G}^0$ and sampling $\n{nc}'$ in $\M{G}^1$. Then, we have that for each possible output $y$ of $\O{Sample}$ of $\M{G}^0$ and for all possible values $r'\in\bin^\lambda$:
+\begin{align*}
+ &\probsub{\n{nc}\sample\bin^\lambda}{y=\M{G}^0.\O{Sample}(\n{nc})}\\
+=&\probsub{r\sample\bin^\lambda,\n{nc}\gets r}{y=\M{G}^0.\O{Sample}(\n{nc})}\pccomment{Rename randomness}\\
+=&\probsub{r\sample\bin^\lambda,\n{nc}'\gets r,\n{nc}\gets r'}{y=\M{G}^1.\O{Sample}(\n{nc},\n{nc}')}\\
+=&\probsub{\n{nc}'\sample\bin^\lambda,\n{nc}\gets r'}{y=\M{G}^1.\O{Sample}(\n{nc},\n{nc}')}\pccomment{Rename randomness}
+\end{align*}
+Since this equality holds for all $r'\in\bin^\lambda$, it holds, in particular, also for a random $r'$, and we obtain that for all $y$
+\begin{align}
+ &\probsub{\n{nc}\sample\bin^\lambda}{y=\M{G}^0.\O{Sample}(\n{nc})}\notag\\
+=&\probsub{\n{nc}'\sample\bin^\lambda,\n{nc}\sample\bin^\lambda}{y=\M{G}^1.\O{Sample}(\n{nc},\n{nc}')}\label{eq:randomnesstryinghard}
+\end{align}
+as required, and we proved that in a single call to $\O{Sample}$, the output distribution is preserved. Now, let's add state into this consideration and integrate our aforementioned induction reasoning. Let's change $\M{G}^0$ and $\M{G}^1$ so that they both maintain a variable $\n{state}\in\bin^\lambda$, initially initialized to $0^\lambda$ and the $\O{Sample}$ oracle of $\M{G}^0$ samples $\n{nc}\sample\bin^\lambda$, updates its state to $\n{nc}\oplus\n{state}$ and then returns $\n{state}$. Similarly,
+$\O{Sample}$ of  $\M{G}^1$ samples $\n{nc}\sample\bin^\lambda$ and $\n{nc}'\sample\bin^\lambda$, updates its state to $\n{nc}'\oplus\n{state}$ and then returns $\n{state}$. Our state relation $R$ is now equality, i.e.:
+
+\[\M{G}^0.\mathsf{state}\stackrel{R}{\sim} \M{G}^1.\mathsf{state}\;\stackrel{\text{def}}{\Leftrightarrow}\;\M{G}^0.\mathsf{state}=\M{G}^1.\mathsf{state}\]
+
+Induction start holds trivially, and the same-outputs and invariant properties hold with the same randomness mapping as before. Now, let's show that, in this specific case, this implies that the \emph{distribution} of the \emph{sequence} of output values $y_1,..,y_q$ is identical on both games $\M{G}^0$ and $\M{G}^1$. Analogously to (\ref{eq:randomnesstryinghard}), we can show that for all $y$ and for all values of $\mathsf{state}$, we have
+\begin{align}
+ &\probsub{\n{nc}\sample\bin^\lambda}{y=\M{G}^0.\O{Sample}(\mathsf{state},\n{nc})}\notag\\
+=&\probsub{\n{nc}'\sample\bin^\lambda,\n{nc}\sample\bin^\lambda}{y=\M{G}^1.\O{Sample}(\mathsf{state},\n{nc},\n{nc}')}\label{eq:randomnesstryingevenharder}.
+\end{align}
+Writing $(\M{G}^0.\O{Sample})^q$ and $(\M{G}^1.\O{Sample})^q$ for the $q$-wise sequential application of $\M{G}^b.\O{Sample}$ to the initial state $0^\lambda$ (each time updating the state and running with fresh randomness), we thus also obtain that for all $y_1,..,y_q$
+\begin{align*}
+ &\probsub{\n{nc}_1,..,\n{nc}_q}{(y_1,..,y_q)=(\M{G}^0.\O{Sample})^q(0^\lambda,\n{nc}_1,..,\n{nc}_q)}\\
+=&\probsub{\n{nc}_1,\n{nc}'_1,..,\n{nc}_q,,\n{nc}'_q}{(y_1,..,y_q)=(\M{G}^1.\O{Sample})^q(0^\lambda,\n{nc}_1,\n{nc}'_1,..,\n{nc}_q,,\n{nc}'_q)}.
+\end{align*}
+
+
+\paragraph{Randomness mapping.} Domino formalizes the relating of sampling operations by associating to each sampling operation a sampling name and asking the user to write an injective relation over these randomness names. Concretely, let's call the sample operation in $\M{G}^0.\O{Sample}$ $\n{smpl\_nc}$ and the sample operations in $\M{G}^1.\O{Sample}$ $\n{smpl\_nc}$ and $\n{smpl\_{nc'}}$,
+and then we define a randomness relation
+\begin{align*}
+																				 &\mathsf{randomness\mathhyphen relation}(\n{id\_left},\n{id\_right})=1\\
+ \stackrel{\text{def}}{\Leftrightarrow}\;&(\n{id\_left}=\n{smpl\_nc}\,\wedge\,\n{id\_right}=\n{smpl\_nc'}).
+\end{align*}
