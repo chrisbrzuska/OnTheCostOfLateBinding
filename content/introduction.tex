@@ -18,7 +18,7 @@ formalize both of our analyses in Domino, a recently published verification tool
 We conclude with a discussion on why the analysis of the key schedule with early binding is easily extendible to, e.g., including further keys, while extending the analysis of key schedule with late binding is more involved.
 
 \paragraph{Discussion.} The effect of late binding on different proof methods might vary, especially in different styles known in pen-and-paper proofs.
-One of the main advantages of SSPs is that they are formalization-friendly and have been formalized in 3 different tools already~\cite{X,Y,Z}.
+One of the main advantages of SSPs is that they are formalization-friendly and have been formalized in 3 different tools already~\cite{CSF:DupKohOec22,Y,CSF:AHRVWH21}.
 The key schedule of our toy protocol is already much more complex than the key schedule of any other key exchange protocol which
 has been analyzed in EasyCrypt~\cite{X,Y,Z}, and the EasyCrypt analysis has been a major effort. In turn, the main bottleneck of
 our SSP-based analyses in Domino is the analysis of the late binding version of the protocol---the analysis of the early binding key schedule
