@@ -1,1 +1,37 @@
-Ceterum censeo
+Since older versions of Transport Layer Security (TLS) suffered from numerous attacks~\cite{X,Y,Z}, %TODO: Heavy blanket-citing with 10 papers or so. BEAST, Lucky13...
+the newest version of TLS is based on principled design and close collaboration between industry and academia.
+In particular, drafts of TLS 1.3 have been extensively analyzed~\cite{X,Y,Z} %TODO: Heavy blanket-citing with 10 papers or so. Cite Cas Cremers, Marc Fischlin, Felix Günther and others.
+before the final RFC was published by the IETF in 2018, and the protocol has been modified not only in order to ensure
+its security, but also to make its analysis as simple as possible. It seems that this additional effort has paid off: While implementation-level attacks naturally still emerge~\cite{X}, there have been no major \emph{protocol-level} attacks on TLS 1.3, except, perhaps, the \emph{Selfie} attack~\cite{X}, which exploits settings which use a pre-shared key (PSK) and where an endpoint can act as both client and server, since TLS ensures \emph{key}-based authentication only and does not natively verify identities. %Mention 0-RTT early traffic issues, i.e., that this does not provide replay protection, but that users are sometimes now aware of this?
+
+Although TLS 1.3 was designed for ease of analysis, the TLS 1.3 key schedule analysis by Brzuska, Delignat-Lavaud, Egger, Fournet, Kohbrok and Kohlweiss (BDEFKK~\cite{X}) concluded only 4 years after the publication of the TLS 1.3 RFC and is tremendously complicated---it is the only computational analysis which simultaneously models agility and session resumption. Yet, this result is not where the authors themselves identify the source of the complexity of the model. Instead, they argue that the \emph{late binding} is an unnecessary source of complexity. Concretely, the TLS 1.3 does not immediately bind the Diffie-Hellman (DH) secret to its shares and does not immediately bind the PSK to a domain-separation bit which distinguishes between application PSKs and resumption PSKs. Instead of using early binding, domain separation only happens later when hashing the entire transcript into keys which are derived, so-called \emph{separation points} in the language of BDEFKK. As a result of late binding, several sessions might share the same internal keys, but not their final keys. Yet, the analysis needs to take these shared keys across sessions into account.
+
+Since TLS 1.3 has been remarkably robust, there has been no practical reason to include the changes suggested by BDEFKK for an easier analysis at a high cost, since existing implementations would have needed to be updated. Now that TLS 1.3 is extended in order to provide post-quantum security (or rather hybrid security), it would be a natural opportunity to include early binding. In particular, in the domain of KEM security, binding of the public-key and the ciphertext are well-recognized KEM properties which translate into protocol security (cf.~\cite{X}). %keeping up with the KEMS
+However, instead of binding the KEM shared-key to the KEM ciphertext and public-key immediately and adding an analogous early binding to the DH secret as well, the current RFC suggests simply concatenating the KEM shared-key and the DH secret, hashing them into the key schedule and only performing late binding later via the transcript as before.
+
+\paragraph{Our Contribution.} We provide a description of hybrid TLS 1.3 using early binding for both the KEM shared key and the DH shared key.
+We modify the {\color{blue}which} implementation to adopt our proposal and provide extensive testing to illustrate that, as expected, the computational cost of early binding is negligible. 
+
+As a second contribution, we set out to explain the BDEFKK claim that late binding complicates the key schedule analysis by analyzing two key schedule variations of a toy protocol which supports both a KEM and a PSK. Following BDEFKK, our analysis relies on the state-separating proofs framework (SSP~\cite{X}). We
+formalize both of our analyses in Domino, a recently published verification tool for reduction proofs in cryptography~\cite{X}.
+
+We conclude with a discussion on why the analysis of the key schedule with early binding is easily extendible to, e.g., including further keys, while extending the analysis of key schedule with late binding is more involved.
+
+\paragraph{Discussion.} The effect of late binding on different proof methods might vary, especially in different styles known in pen-and-paper proofs.
+One of the main advantages of SSPs is that they are formalization-friendly and have been formalized in 3 different tools already~\cite{X,Y,Z}.
+The key schedule of our toy protocol is already much more complex than the key schedule of any other key exchange protocol which
+has been analyzed in EasyCrypt~\cite{X, Y, Z}, and the EasyCrypt analysis has been a major effort. In turn, the main bottleneck of
+our SSP-based analyses in Domino is the analysis of the late binding version of the protocol---the analysis of the early binding key schedule
+requires only minimal formalization effort. This suggests that formalizing SSP-style proofs of larger protocols is potentially feasible,
+and if a formalization is easily extendable, then it is easy to update a proof and check small protocol changes. 
+
+\paragraph{Future Work \& Impact.} We hope that our work provides encouragement to build an SSP-style extendable proof of TLS 1.3. Once such
+a \emph{base analysis} exists, it will remain useful for the lifetime of the protocol since it can be updated and extended each time the
+protocol is modified. However, in order to allow such a sustainable analysis, it might be useful to change the TLS 1.3 key schedule so that
+it uses early binding instead of late binding. It is not clear that such a change will happen to TLS 1.3 in the near future, since the current late binding version is already in a rather late discussion stage~\cite{X}. However, we hope
+that our work informs design decisions for TLS 1.3 as well as other protocols in the future.
+
+
+
+%The BDEFKK claim that late binding of DH shares and resumption bits complicates the analysis
+%suggestions are a hypothesis more than a conjecture in the sense 
