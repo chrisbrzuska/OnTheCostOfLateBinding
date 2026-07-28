@@ -1,0 +1,6 @@
+\begin{tikzpicture}
+\node[anchor=south west,align=center,package,minimum height=1cm,fill=white] (node0) at (3.5,1.5) {\M{kem}};\node[anchor=south west,align=center,package,minimum height=2cm,fill=white] (node1) at (7,0.5) {\M{key}};\draw[-latex,rounded corners]
+    (5.5,2) -- node[onarrow] {\O{SET}} (7,2);
+\draw[-latex,rounded corners] (2,2) -- node[onarrow] {\O{SET}\\\O{ENCAPS}\\\O{DECAPS}} (3.5,2);
+\draw[-latex,rounded corners] (2,1) -- node[onarrow] {\O{HON}\\\O{GET}} (7,1);
+\end{tikzpicture}

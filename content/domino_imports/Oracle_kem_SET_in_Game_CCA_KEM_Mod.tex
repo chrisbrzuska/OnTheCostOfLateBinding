@@ -1,0 +1,9 @@
+\procedure{$\O{SET}(\n{sk}, \n{hon})$}{
+\pcif \n{hon} \pcthen\\
+\pcind \n{sk} \stackrel{sk}{\sample} \bin^{\n{sk}_\n{len}}\\
+ \n{pk} \gets \O{\n{keygen}}(\n{sk})\\
+\pcassert \n{HON}[\n{pk}] = \O{none}\left(\O{Type { kind: Boolean }}\right) \\
+ \n{SK}\left[\n{pk}\right] \gets \O{some}\left(\n{sk}\right)\\
+ \n{HON}\left[\n{pk}\right] \gets \O{some}\left(\n{hon}\right)\\
+ \pcreturn \n{pk}\\
+}

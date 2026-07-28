@@ -1,0 +1,9 @@
+\procedure{$\O{ENCAPS}(\n{pk}, \n{rand}, \n{hon\_rand})$}{
+\pcif \n{hon}_\n{rand} \pcthen\\
+\pcind \n{rand} \stackrel{rand}{\sample} \bin^{\n{rand}_\n{len}}\\
+ \left(\n{ctxt}, \n{ss}\right) \gets \O{\n{encaps}}(\n{pk}, \n{rand})\\
+ \n{hon}_\n{pk} \gets \O{unwrap}\left(\n{HON}[\n{pk}]\right)\\
+ \n{hon} \gets \left(\n{hon}_\n{rand} \wedge \n{hon}_\n{pk}\right)\\
+\O{SET}(\left(\begin{array}{c}\n{pk}, \n{ctxt}\end{array}\right), \n{ss}, \n{hon}) \pccomment{Pkg: key} \\
+ \pcreturn \n{ctxt}\\
+}

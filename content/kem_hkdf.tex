@@ -1,0 +1,58 @@
+In this chapter, we will construct KEM-HKDF, a key-binding KEM, from a KEM and the Unique PRF we constructed in the previous section.
+
+\begin{figure}
+ \centering
+ \input{content/domino_imports/CompositionGraph_Game_CCA_KEM_HKDF.tex}
+ \caption{KEM-HKDF}
+ \label{fig:graph_KEM-HKDF}
+\end{figure}
+
+The KEM provides three interfaces: SET, ENCAPS, and DECAPS (see also Figure~\ref{fig:Pkg_KEM-HKDF}). SET takes as input a secret key and a n honesty value. If the key is supposed to be honest, we sample a random key and return the corresponding public key. If the key is supposed to be dishonest, we compute the public key based on the secret key provided by the adversary. Both the secret key and the honesty value are saved under the public key.
+
+ENCAPS takes a public key, a randomness, and an honesty value for the randomness as input. If the randomness is supposed to be honest, it is resampled, otherwise, we uses the randomness provided by the adversary. We then in a first step compute the encapsulation, and use the resulting key to compute the PRF of the public key and the ciphertext. We save the combination of public key, ciphertext, and the derived key in the Key package, and set the corresponding honesty bit if both the randomness as well as the key were honest.
+
+DECAPS, on input public key and ciphertext, retrieves the corresponding secret key, and uses this to compute the decapsulation and the derived key. Finally, we set the honesty bit for this public key and ciphertext pair to false.
+
+\begin{figure}
+ \centering
+ \input{content/domino_imports/Package_kem_in_Game_CCA_KEM_HKDF.tex}
+ \caption{KEM}
+ \label{fig:Pkg_KEM-HKDF}
+\end{figure}
+
+To define security, we again define two worlds, KEM-HKDF\_Real and KEM-HKDF\_Ideal, where the real world works as described above, and for the ideal world, we configure the Key package such that it will always sample random keys instead of the ones provided by KEM-HKDF, and ensure that the resulting keys are unique.
+
+\begin{definition}[KEM-HKDF]
+\label{advantage:theorem:Main:Real:Ideal}
+For all adversaries $\adv$, we define the KEM-HKDF advantage as\[\mathsf{Adv}(\adv;KEM-HKDF\_Real,KEM-HKDF\_Ideal):=\abs{\begin{array}{l}\phantom{-}\prob{1 = \adv\rightarrow KEM-HKDF\_Real}\\-\prob{1 = \adv\rightarrow KEM-HKDF\_Ideal }\end{array}}.
+\]
+We say that the KEM-HKDF is secure if this advantage is negligible.
+\end{definition}
+
+We need two assumptions to prove KEM-HKDF security: The first one is the Unique PRF security from the previous section (see Definition~\ref{advantage:theorem:Main:PRF_real:PRF_ideal}, and the second one is the security of the underlying KEM. The KEM works similar to the KEM-HKDF, just without the PRF step (see Figure~\ref{fig:Pkg_KEM}).
+
+\begin{figure}
+ \centering
+ \input{content/domino_imports/Package_kem_in_Game_CCA_KEM_Mod.tex}
+ \caption{KEM}
+ \label{fig:Pkg_KEM}
+\end{figure}
+
+We define the KEM in the real world as above, while in the ideal world, we configure the Key package to always sample random keys instead of the ones provided by the KEM. Note that we do not require uniqueness here. This now let's us define security of a KEM as follows:
+
+
+\begin{definition}[KEM]
+\label{advantage:assumption:KEM:KEM_Mod_real:KEM_Mod_ideal}
+For all adversaries $\adv$, we define the KEM advantage as\[\mathsf{Adv}(\adv;KEM\_Mod\_real,KEM\_Mod\_ideal):=\abs{\begin{array}{l}\phantom{-}\prob{1 = \adv\rightarrow KEM\_Mod\_real}\\-\prob{1 = \adv\rightarrow KEM\_Mod\_ideal}\end{array}}.
+\]
+A KEM is secure if the above advantage is negligible for all adversaries.
+\end{definition}
+
+This now lets us state our main theorem for this section:
+
+\begin{theorem}[Main]
+We prove that for all adversaries $\adv$, there are reductions $\rdv_{1}$, $\rdv_{2}$ such that \begin{align*}\mathsf{Adv}(\adv, Real, Ideal)) \leq &\mathsf{Adv}(\adv\rightarrow\rdv_{1},\mathit{KEM\_Mod\_ideal},\mathit{KEM\_Mod\_real}) \\+ &\mathsf{Adv}(\adv\rightarrow\rdv_{2},\mathit{Unique\_PRF\_ideal},\mathit{Unique\_PRF\_real}).\end{align*} %where reduction $\rdv_1$ is defined in Fig.~\ref{figure:reduction:KEM:Hybrid0:Hybrid1}, reduction $\rdv_2$ is defined in Fig.~\ref{figure:reduction:Unique_PRF:Hybrid1:Hybrid2}
+\end{theorem}
+
+
+

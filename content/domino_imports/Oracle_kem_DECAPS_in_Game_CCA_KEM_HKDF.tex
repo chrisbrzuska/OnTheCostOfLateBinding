@@ -1,0 +1,6 @@
+\procedure{$\O{DECAPS}(\n{pk}, \n{ctxt})$}{
+ \n{sk} \gets \O{unwrap}\left(\n{SK}[\n{pk}]\right)\\
+ \n{ss} \gets \O{\n{decaps}}(\n{sk}, \n{ctxt})\\
+ \n{k} \gets \O{\n{prf}}(\n{ss}, \left(\begin{array}{c}\n{pk}, \n{ctxt}\end{array}\right))\\
+\O{SET}(\left(\begin{array}{c}\n{pk}, \n{ctxt}\end{array}\right), \n{k}, \lit{false}) \pccomment{Pkg: key} \\
+}
