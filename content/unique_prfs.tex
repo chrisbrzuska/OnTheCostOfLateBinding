@@ -65,7 +65,7 @@ We say that the function $f$ is collision-resistant if the above advantage is ne
 This allows us now to state our main theorem for this section:
 
 \begin{theorem}[Main]
-We prove that for all adversaries $\adv$, there are reductions $\rdv_{1}$, $\rdv_{2}$ such that \begin{align*}\mathsf{Adv}(\adv, PRF\_real, PRF\_ideal)) \leq &\mathsf{Adv}(\adv\rightarrow\rdv_{1},\mathit{CR\_ideal},\mathit{CR\_real}) \\+ &\mathsf{Adv}(\adv\rightarrow\rdv_{2},\mathit{PRF\_mon\_ideal},\mathit{PRF\_mon\_real})\end{align*} where reduction $\rdv_1$ is defined in Fig.~\ref{figure:reduction:CR:CR_Reduction_real:CR_Reduction_ideal}, reduction $\rdv_2$ is defined in Fig.~\ref{figure:reduction:PRF:PRF_Reduction_real:PRF_Reduction_ideal}
+We prove that for all adversaries $\adv$, there are reductions $\rdv_{1}$, $\rdv_{2}$ such that \begin{align*}\mathsf{Adv}(\adv, PRF\_real, PRF\_ideal)) \leq &\mathsf{Adv}(\adv\rightarrow\rdv_{1},\mathit{CR\_ideal},\mathit{CR\_real}) \\+ &\mathsf{Adv}(\adv\rightarrow\rdv_{2},\mathit{PRF\_mon\_ideal},\mathit{PRF\_mon\_real}).\end{align*} %where reduction $\rdv_1$ is defined in Fig.~\ref{figure:reduction:CR:CR_Reduction_real:CR_Reduction_ideal}, reduction $\rdv_2$ is defined in Fig.~\ref{figure:reduction:PRF:PRF_Reduction_real:PRF_Reduction_ideal}
 \end{theorem}
 
 \subsection{The Proof}
